@@ -1,0 +1,29 @@
+#%RAML 0.8
+	---
+	title: Yapper API
+	baseUri: http://localhost:8080/yapper/api/{version}
+	version: v1
+	
+	/room:
+		get:
+		put:
+		post:
+		delete:
+		
+		/{roomid}:
+			get:
+			put:
+			post:
+			delete:
+			
+			/message:
+				get:
+				put:
+				post:
+				delete:
+				
+				/{messageId}:
+					get:
+					put:
+					post:
+					delete:
