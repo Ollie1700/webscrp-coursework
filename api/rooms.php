@@ -84,7 +84,9 @@ foreach($rooms as $room) {
     
         (function() {
             
-            var limit = 0;
+            var 
+                limit = 0,
+                initial_pass = true;
             
             setInterval(function(){
                 
@@ -100,6 +102,19 @@ foreach($rooms as $room) {
                     if(objs == null) return;
                     
                     for(var i = 0; i < objs.length; i++) {
+                        
+                        // If this is the first retrieval of messages, don't display any of them; we've already displayed them during
+                        // the initial room rendering. We just want to get the limit.
+                        if(initial_pass) {
+                            limit++;
+                            continue;
+                        }
+                        
+                        // If the message is one of our own messages, don't display it again
+                        if(objs[i].user_id == <?php echo $CURRENT_USER->get_user_id(); ?>) {
+                           limit++;
+                           continue; 
+                        }
                         
                         var
                             message_span = document.createElement("span"),
@@ -122,7 +137,12 @@ foreach($rooms as $room) {
                     }
                     
                     // Always scroll down to the latest message
-                    channel_chat.scrollTop = latest_message.offsetTop;
+                    if(latest_message) {
+                        channel_chat.scrollTop = latest_message.offsetTop;
+                    }
+                    
+                    // Once we reach this part of the code, the initial pass has completed
+                    initial_pass = false;
                     
                 });
                 
