@@ -50,7 +50,9 @@
             <?php endif; ?>
         </section>
         
-        <script src="lib/user.js"></script>
+        <?php if(!isset($CURRENT_USER)) : ?>
+            <script src="lib/user.js"></script>
+        <?php endif; ?>
     </body>
 </html>
 
