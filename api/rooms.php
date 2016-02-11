@@ -31,7 +31,7 @@ foreach($rooms as $room) {
     
     echo
         '<div class="channel-input">
-                <input id="'.$room->get_room_id().'-message-input" type="text" placeholder="Send a message to #'.$room->get_room_name().'">
+                <textarea id="'.$room->get_room_id().'-message-input" type="text" placeholder="Send a message to #'.$room->get_room_name().'"></textarea>
             </div>
         </div>
         ';
