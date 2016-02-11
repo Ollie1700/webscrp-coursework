@@ -52,6 +52,10 @@ foreach($rooms as $room) {
             channel_chat_input.addEventListener('keydown', function(e) {
                 if(e.keyCode == 13) {
                     
+                    if(!(/\S/.test(channel_chat_input.value))) {
+                        return;
+                    }
+                    
                     var date = new Date();
                     
                     var timestamp = date.getHours() + ':' + date.getMinutes(); // + ', ' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear();
@@ -76,6 +80,8 @@ foreach($rooms as $room) {
                     channel_chat_input.value = '';
                     
                     channel_chat.scrollTop = channel_chat.scrollHeight;
+                    
+                    e.preventDefault();
                     
                     return false; // Prevent the default form submission
                 }
