@@ -36,7 +36,7 @@
                 
                 <div class="user-login-container">
                     
-                    <h1>Welcome! Please log in or register.</h1>
+                    <h1>Welcome! Please <a id="log-in-form-toggle" href="#">log in</a> or <a id="register-form-toggle" href="#">register</a>.</h1>
                     
                     <div id="user-login-form-container">
                         <?php include 'inc/login.php'; ?>

@@ -86,16 +86,6 @@ h1 span.subtitle {
     margin: 0 auto;
 }
 
-.user-login-container {
-    width: 50%;
-    margin: 0 auto;
-    text-align: center;
-}
-
-#user-register-form-container {
-    display: none;
-}
-
 .channel {
     display: block;
     position: relative;
@@ -181,3 +171,47 @@ h1 span.subtitle {
     border-radius: 15px;
     border: 1px black solid;
 }
+
+/**
+ * LOGIN, REGISTER AND PROFILE
+ */
+
+.user-login-container {
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#user-login-form-container {
+    display: block;
+}
+
+#user-register-form-container {
+    display: none;
+}
+
+form input {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18pt;
+    text-align: center;
+    display: inline-block;
+    width: 70%;
+    margin: 5px auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
