@@ -58,7 +58,20 @@ foreach($rooms as $room) {
                     
                     Ajax('POST', '/room/<?php echo $room->get_room_id(); ?>/message', ['user_id=<?php echo $CURRENT_USER->get_user_id(); ?>', 'message=' + channel_chat_input.value, 'timestamp=' + timestamp], function(r){});
                     
-                    channel_chat.innerHTML += '<span class="message">' + channel_chat_input.value + '<span class="sender">' + timestamp + ' | <?php echo $CURRENT_USER->get_user_first_name() . ' ' . $CURRENT_USER->get_user_last_name(); ?></span></span>';
+                    var
+                        message_span = document.createElement("span"),
+                        message_sender_span = document.createElement("span"),
+                        message_text_node = document.createTextNode(channel_chat_input.value),
+                        message_sender_text_node = document.createTextNode(timestamp + ' | <?php echo $CURRENT_USER->get_user_first_name() . ' ' . $CURRENT_USER->get_user_last_name(); ?>');
+                    
+                    message_span.className += "message";
+                    message_sender_span.className += "sender";
+                    
+                    message_sender_span.appendChild(message_sender_text_node);
+                    
+                    message_span.appendChild(message_text_node);
+                    message_span.appendChild(message_sender_span);
+                    channel_chat.appendChild(message_span);
                     
                     channel_chat_input.value = '';
                     
@@ -71,9 +84,7 @@ foreach($rooms as $room) {
     
         (function() {
             
-            var 
-                limit = 0,
-                earliest_message_id = -1;
+            var limit = 0;
             
             setInterval(function(){
                 
@@ -86,13 +97,9 @@ foreach($rooms as $room) {
                         channel_chat = document.getElementById("channel-chat-<?php echo $room->get_room_id(); ?>"),
                         latest_message;
                     
-                    channel_chat.innerHTML = '';
+                    if(objs == null) return;
                     
                     for(var i = 0; i < objs.length; i++) {
-                        
-                        if(earliest_message_id == -1) {
-                            earliest_message_id = objs[i].message_id;
-                        }
                         
                         var
                             message_span = document.createElement("span"),
@@ -111,8 +118,7 @@ foreach($rooms as $room) {
                         
                         latest_message = message_span;
                         
-                        // Set the limit equal to the id of the latest message so that we only retrieve messages later than the latest one we've seen
-                        limit = objs[i].message_id - earliest_message_id;
+                        limit++;
                     }
                     
                     // Always scroll down to the latest message

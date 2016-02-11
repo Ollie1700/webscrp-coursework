@@ -67,20 +67,20 @@ switch($noun) {
 
                                 case 'GET':
                                     
-                                    $limit = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 0;
+                                    $limit = isset($_REQUEST['limit']) ? intval($_REQUEST['limit']) : 0;
                                     
                                     $room = Room::get($room_id);
                                     
                                     $messages = $room->get_messages();
                                     
-                                    if($limit >= sizeof($messages)) {
+                                    if($limit >= count($messages)) {
                                         // Return nothing and exit
                                         exit_with_status_code(200);
                                     }
                                     
                                     $sliced = array_slice($messages, $limit);
                                     
-                                    foreach($messages as $msg) {
+                                    foreach($sliced as $msg) {
                                         echo $msg->to_json();
                                     }
                                     
