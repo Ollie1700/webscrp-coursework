@@ -50,6 +50,10 @@
             <?php endif; ?>
         </section>
         
+        <div id="profile-modal">
+            <?php include 'inc/profile.php'; ?>
+        </div>
+        
         <?php if(!isset($CURRENT_USER)) : ?>
             <script src="lib/user.js"></script>
         <?php endif; ?>

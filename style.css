@@ -201,6 +201,11 @@ form input {
     margin: 5px auto;
 }
 
+#profile-modal {
+    display: none;
+    transition: display 0.5s;
+}
+
 /**
  * MISC
  */
