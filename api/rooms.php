@@ -31,7 +31,7 @@ foreach($rooms as $room) {
     
     echo
         '<div class="channel-input">
-                <input id="'.$room->get_room_id().'-message-input" type="text" placeholder="Send a message to #'.$room->get_room_name().'">
+                <textarea id="'.$room->get_room_id().'-message-input" type="text" placeholder="Send a message to #'.$room->get_room_name().'"></textarea>
             </div>
         </div>
         ';
@@ -51,6 +51,10 @@ foreach($rooms as $room) {
             
             channel_chat_input.addEventListener('keydown', function(e) {
                 if(e.keyCode == 13) {
+                    
+                    if(!(/\S/.test(channel_chat_input.value))) {
+                        return;
+                    }
                     
                     var date = new Date();
                     
@@ -76,6 +80,8 @@ foreach($rooms as $room) {
                     channel_chat_input.value = '';
                     
                     channel_chat.scrollTop = channel_chat.scrollHeight;
+                    
+                    e.preventDefault();
                     
                     return false; // Prevent the default form submission
                 }
