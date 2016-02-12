@@ -52,6 +52,7 @@ foreach($rooms as $room) {
             channel_chat_input.addEventListener('keydown', function(e) {
                 if(e.keyCode == 13) {
                     
+                    // If the message is nothing but whitespace don't send it
                     if(!(/\S/.test(channel_chat_input.value))) {
                         return;
                     }
@@ -92,7 +93,10 @@ foreach($rooms as $room) {
             
             var 
                 limit = 0,
-                initial_pass = true;
+                initial_pass = true,
+                channel_chat = document.getElementById("channel-chat-<?php echo $room->get_room_id(); ?>");
+            
+            channel_chat.scrollTop = channel_chat.scrollHeight + 500;
             
             setInterval(function(){
                 
@@ -102,7 +106,6 @@ foreach($rooms as $room) {
                     
                     var 
                         objs = get_json_objects_from_result(r),
-                        channel_chat = document.getElementById("channel-chat-<?php echo $room->get_room_id(); ?>"),
                         latest_message;
                     
                     if(objs == null) return;
