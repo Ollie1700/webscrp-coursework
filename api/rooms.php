@@ -2,11 +2,7 @@
 
 require_once 'init.php';
 
-$rooms = array();
-
-foreach($CURRENT_USER->get_rooms_list() as $room_id) {
-    $rooms[] = Room::get($room_id);
-}
+$rooms = $CURRENT_USER->get_rooms_list();
 
 foreach($rooms as $room) {
     echo 
@@ -160,7 +156,7 @@ foreach($rooms as $room) {
         })();
 
     <?php endforeach; ?>
-
+    
     -->
 </script>
 

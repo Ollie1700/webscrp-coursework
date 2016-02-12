@@ -20,7 +20,7 @@
             </div>
             
             <?php if(isset($CURRENT_USER)) : ?>
-                <div class="profile">
+                <div id="profile-modal-toggle" class="profile">
                     <img src="img/default_user_profile_pic.png">
                     <span class="name">
                         <?php echo 'Welcome back, ' . $CURRENT_USER->get_user_first_name() . '!'; ?>
@@ -51,12 +51,13 @@
         </section>
         
         <div id="profile-modal">
-            <?php include 'inc/profile.php'; ?>
+            <div id="profile-container">
+                <span id="close-profile-modal">x</span>
+                <?php include 'inc/profile.php'; ?>
+            </div>
         </div>
         
-        <?php if(!isset($CURRENT_USER)) : ?>
-            <script src="lib/user.js"></script>
-        <?php endif; ?>
+        <script src="lib/user.js"></script>
     </body>
 </html>
 

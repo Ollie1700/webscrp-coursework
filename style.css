@@ -56,7 +56,17 @@ span.name, span.description {
 
 .profile {
     float: right;
+    padding: 5px;
+    border-radius: 5px;
     margin-top: 19px;
+    cursor: pointer;
+    transition: box-shadow 0.25s;
+}
+
+.profile:hover {
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.75);
 }
 
 .profile img {
@@ -202,8 +212,42 @@ form input {
 }
 
 #profile-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+#profile-container {
+    position: relative;
+    width: 50%;
+    max-height: 80%;
+    overflow-y: auto;
+    margin: 10% auto;
+    padding: 50px;
+    border-radius: 10px;
+    background-color: white;
+}
+
+#profile-modal, #profile-container {
     display: none;
     transition: display 0.5s;
+}
+
+#profile-container h1, h2, h3 {
+    margin-bottom: 15px;
+}
+
+#close-profile-modal {
+    font-size: 24pt;
+    font-weight: bold;
+    color: #000;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
 }
 
 /**

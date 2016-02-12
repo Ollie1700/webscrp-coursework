@@ -25,14 +25,14 @@ class User {
         $sql = $db->prepare("SELECT `user_id_2` FROM friends WHERE user_id_1=?");
         $sql->execute(array($user_id));
         while($row = $sql->fetch(PDO::FETCH_ASSOC)) {
-            $this->friends_list[] = $row['user_id_2'];
+            $this->friends_list[] = User::get($row['user_id_2']);
         }
         
         // Get this user's room list
         $sql = $db->prepare("SELECT `room_id` FROM user_in_room WHERE user_id=?");
         $sql->execute(array($user_id));
         while($row = $sql->fetch(PDO::FETCH_ASSOC)) {
-            $this->rooms_list[] = $row['room_id'];
+            $this->rooms_list[] = Room::get($row['room_id']);
         }
     }
     
