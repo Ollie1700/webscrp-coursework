@@ -18,7 +18,7 @@ foreach($rooms as $room) {
     
     foreach($messages as $message) {
         echo '
-            <span class="message">
+            <span draggable="true" class="message">
                 '.$message->get_message_message().'
                 <span class="sender">
                     '.$message->get_message_timestamp().' | '.$message->get_sender_name().'
@@ -80,6 +80,10 @@ foreach($rooms as $room) {
                     channel_chat_input.value = '';
                     
                     channel_chat.scrollTop = channel_chat.scrollHeight;
+                    
+                    // Make it draggable
+                    message_span.setAttribute("draggable", true);
+                    //message_span.setAttribute("data-dbid", );
                     
                     e.preventDefault();
                     
@@ -160,8 +164,6 @@ foreach($rooms as $room) {
 
     -->
 </script>
-
-
 
 
 

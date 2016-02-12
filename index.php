@@ -44,7 +44,6 @@
             <?php endif; ?>
         </section>
         
-        <script>
-        </script>
+        <script src="lib/drag.js"></script>
     </body>
 </html>
