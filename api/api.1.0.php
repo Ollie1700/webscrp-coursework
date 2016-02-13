@@ -223,63 +223,112 @@ switch($noun) {
          * Parameters: email, first_name, last_name
          */
         if(!empty($user_id)) {
-            switch($verb) {
-                    
-                case 'POST':
-                    
-                    echo 'Cannot overwrite existing user.';
-                    exit_with_status_code(409);
-                    
-                case 'PUT':
-                    
-                    $email = $_REQUEST['email'];
-                    $first_name = $_REQUEST['first_name'];
-                    $last_name = $_REQUEST['last_name'];
-                    
-                    if(empty($email) || empty($first_name) || empty($last_name)) {
-                        echo 'Email, first name and last name must have a value.';
-                        exit_with_status_code(400);
-                    }
-                    else {
-                        $updated_user = User::update($user_id, $email, $first_name, $last_name);
-                        if($updated_user) {
-                            echo 'Successfully updated user.';
-                            exit_with_status_code(201);
+            
+            $noun_2 = array_shift($uri);
+            
+            if($noun_2) {
+                
+                switch($noun_2) {
+                    case 'friend':
+                        
+                        $action = array_shift($uri);
+                        
+                        switch($action) {
+                            case 'add':
+                                
+                                switch($verb) {
+
+                                    case 'POST':
+                                        
+                                        if(isset($_REQUEST['friend_email'])) {
+                                            
+                                            $friend_email = $_REQUEST['friend_email'];
+                                            
+                                            
+                                            
+                                        }
+                                        else {
+                                            echo 'The email of the friend you wish to add is required.';
+                                            exit_with_status_code(400);
+                                        }
+                                        
+                                    case 'PUT': exit_with_status_code(405);
+
+                                    case 'GET': exit_with_status_code(405);
+                                        
+                                    case 'DELETE': break;
+
+                                }
+                                
+                                break;
+                            case 'remove':
+                                
+                                break;
                         }
-                        else {
-                            echo 'Failed to update user.';
+                        
+                        break;
+                }
+                
+            }
+            else {
+                switch($verb) {
+
+                    case 'POST':
+
+                        echo 'Cannot overwrite existing user.';
+                        exit_with_status_code(409);
+
+                    case 'PUT':
+
+                        $email = $_REQUEST['email'];
+                        $first_name = $_REQUEST['first_name'];
+                        $last_name = $_REQUEST['last_name'];
+
+                        if(empty($email) || empty($first_name) || empty($last_name)) {
+                            echo 'Email, first name and last name must have a value.';
                             exit_with_status_code(400);
                         }
-                    }
-                    
-                case 'GET':
-                    
-                    $user = User::get($user_id);
-                    
-                    if($user) {
-                        echo $user->to_json();
-                        exit_with_status_code(200);
-                    }
-                    else {
-                        echo 'User not found.';
-                        exit_with_status_code(404);
-                    }
-                    
-                case 'DELETE':
-                    
-                    $result = User::delete($user_id);
-                    
-                    if($result) {
-                        echo 'Successfully deleted user';
-                        exit_with_status_code(200);
-                    }
-                    else {
-                        echo 'The user you are attempting to delete doesn\'t exist';
-                        exit_with_status_code(404);
-                    }
-                    
-                default:
-                    exit_with_status_code(405);
+                        else {
+                            $updated_user = User::update($user_id, $email, $first_name, $last_name);
+                            if($updated_user) {
+                                echo 'Successfully updated user.';
+                                exit_with_status_code(201);
+                            }
+                            else {
+                                echo 'Failed to update user.';
+                                exit_with_status_code(400);
+                            }
+                        }
+
+                    case 'GET':
+
+                        $user = User::get($user_id);
+
+                        if($user) {
+                            echo $user->to_json();
+                            exit_with_status_code(200);
+                        }
+                        else {
+                            echo 'User not found.';
+                            exit_with_status_code(404);
+                        }
+
+                    case 'DELETE':
+
+                        $result = User::delete($user_id);
+
+                        if($result) {
+                            echo 'Successfully deleted user';
+                            exit_with_status_code(200);
+                        }
+                        else {
+                            echo 'The user you are attempting to delete doesn\'t exist';
+                            exit_with_status_code(404);
+                        }
+
+                    default:
+                        exit_with_status_code(405);
+                }
             }
         }
         

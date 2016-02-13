@@ -27,6 +27,6 @@ if(isset($_REQUEST['submit']) && isset($_REQUEST['email']) && isset($_REQUEST['p
 
 <?php else : ?>
     
-    Welcome back, <?php echo $CURRENT_USER->get_user_first_name(); ?>!
+    <?php header('Location: index.php'); exit; ?>
     
 <?php endif; ?>

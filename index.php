@@ -22,7 +22,7 @@
             <?php if(isset($CURRENT_USER)) : ?>
                 <div id="profile-modal-toggle" class="profile">
                     <img src="img/default_user_profile_pic.png">
-                    <span class="name">
+                    <span id="user-name" class="name">
                         <?php echo 'Welcome back, ' . $CURRENT_USER->get_user_first_name() . '!'; ?>
                     </span>
                     <span class="description">Design Team</span>

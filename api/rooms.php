@@ -92,7 +92,7 @@ foreach($rooms as $room) {
                 initial_pass = true,
                 channel_chat = document.getElementById("channel-chat-<?php echo $room->get_room_id(); ?>");
             
-            channel_chat.scrollTop = channel_chat.scrollHeight + 500;
+            channel_chat.scrollTop = channel_chat.scrollHeight + 320;
             
             setInterval(function(){
                 
