@@ -73,18 +73,42 @@ class User {
         );
     }
     
+    public function add_friend_by_email($friend_email) {
+        global $db;
+        $sql = $db->prepare("SELECT user_id FROM user WHERE user_email=?");
+        $success = $sql->execute(array($friend_email));
+        if($success && $sql->rowCount()) {
+            $row = $sql->fetch(PDO::FETCH_ASSOC);
+            return $this->add_friend($row['user_id']);
+        }
+        return false;
+    }
+    
     public function add_friend($friend_id) {
         global $db;
         $sql = $db->prepare("INSERT INTO friends(`user_id_1`, `user_id_2`) VALUES(?, ?)");
         $success = $sql->execute(array($this->user_id, $friend_id));
-        return $success && $sql->rowCount();
+        if($success && $sql->rowCount()) {
+            $this->friends_list[] = User::get($friend_id);
+            return true;
+        }
+        return false;
     }
     
     public function remove_friend($friend_id) {
         global $db;
         $sql = $db->prepare("DELETE FROM friends WHERE user_id_1=? AND user_id_2=?");
         $success = $sql->execute($this->user_id, $friend_id);
-        return $success && $sql->rowCount();
+        if($success && $sql->rowCount()) {
+            foreach($this->friends_list as $key => $friend) {
+                if($friend_id == $friend->get_user_id()) {
+                    unset($this->friends_list[$key]);
+                    break;
+                }
+            }
+            return true;
+        }
+        return false;
     }
     
     public static function login($user_email, $password) {

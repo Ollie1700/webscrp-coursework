@@ -15,7 +15,7 @@ if(isset($_REQUEST['submit']) && isset($_REQUEST['email']) && isset($_REQUEST['p
 
 <?php if(!isset($CURRENT_USER)) : ?>
 
-    <form action="" method="POST">
+    <form class="big-form" action="" method="POST">
         <input type="text" name="email" value="<?php echo isset($_REQUEST['email']) ? $_REQUEST['email'] : ''; ?>" placeholder="Email" />
         <input type="password" name="password" placeholder="Password" />
         <input type="submit" name="submit" value="Log In" />

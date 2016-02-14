@@ -75,7 +75,7 @@ if(isset($_REQUEST['submit'])) {
 
 <?php elseif(!$success) : ?>
 
-    <form id="form-register" action="" method="POST">
+    <form class="big-form" id="form-register" action="" method="POST">
         <input type="text" name="email" placeholder="Email" value="<?php echo $email; ?>" />
         <input type="text" name="first_name" placeholder="First Name" value="<?php echo $first_name; ?>" />
         <input type="text" name="last_name" placeholder="Last Name" value="<?php echo $last_name; ?>" />

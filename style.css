@@ -198,11 +198,18 @@ h1 span.subtitle {
 
 form input {
     font-family: 'Roboto', sans-serif;
+}
+
+form.big-form input {
     font-size: 18pt;
     text-align: center;
     display: inline-block;
     width: 70%;
     margin: 5px auto;
+}
+
+form.inline-form input {
+    
 }
 
 #profile-modal {

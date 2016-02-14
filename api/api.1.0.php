@@ -244,7 +244,18 @@ switch($noun) {
                                             
                                             $friend_email = $_REQUEST['friend_email'];
                                             
+                                            $user = User::get($user_id);
                                             
+                                            $success = $user->add_friend_by_email($friend_email);
+                                            
+                                            if($success) {
+                                                echo 'Friend request sent!';
+                                                exit_with_status_code(201);
+                                            }
+                                            else {
+                                                echo 'User not found!';
+                                                exit_with_status_code(404);
+                                            }
                                             
                                         }
                                         else {
