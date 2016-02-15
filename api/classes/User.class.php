@@ -127,8 +127,20 @@ class User {
         $sql = $db->prepare("INSERT INTO friends(`user_id_1`, `user_id_2`) VALUES(?, ?)");
         $success = $sql->execute(array($this->user_id, $friend_id));
         if($success && $sql->rowCount()) {
-            $this->friends_list[] = User::get($friend_id);
-            return true;
+            $friend = User::get($friend_id);
+            $this->friends_list[] = $friend;
+            return $friend;
+        }
+        return false;
+    }
+    
+    public function remove_friend_by_email($friend_email) {
+        global $db;
+        $sql = $db->prepare("SELECT user_id FROM user WHERE user_email=?");
+        $success = $sql->execute(array($friend_email));
+        if($success && $sql->rowCount()) {
+            $row = $sql->fetch(PDO::FETCH_ASSOC);
+            return $this->remove_friend($row['user_id']);
         }
         return false;
     }
@@ -136,7 +148,7 @@ class User {
     public function remove_friend($friend_id) {
         global $db;
         $sql = $db->prepare("DELETE FROM friends WHERE user_id_1=? AND user_id_2=?");
-        $success = $sql->execute($this->user_id, $friend_id);
+        $success = $sql->execute(array($this->user_id, $friend_id));
         if($success && $sql->rowCount()) {
             foreach($this->friends_list as $key => $friend) {
                 if($friend_id == $friend->get_user_id()) {

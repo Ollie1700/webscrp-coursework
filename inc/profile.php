@@ -53,18 +53,16 @@
     <span id="update-profile-form-feedback" style="color:red;"></span>
 
     <h2>Friends</h2>
-    
-    <div id="friends-list-container"></div>
-    
-    <h3>Add a friend:</h3>
+
+    <span id="add-friend-form-feedback" style="color:red;"></span>
     
     <form class="inline-form" id="add-friend-form">
-        <input id="add-friend-input" type="text" placeholder="Friend's Email" />
+        Add a friend: <input id="add-friend-input" type="text" placeholder="Friend's Email" />
         <input id="add-friend-submit" type="submit" value="Send friend request" />
         <input id="add-friend-user-id" type="hidden" value="<?php echo $CURRENT_USER->get_user_id(); ?>" />
     </form>
 
-    <span id="add-friend-form-feedback" style="color:red;"></span>
+    <div id="friends-list-container"><table id="friends-list"></table></div>
 
     <h2>Rooms</h2>
     

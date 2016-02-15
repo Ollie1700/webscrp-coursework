@@ -230,73 +230,64 @@ switch($noun) {
                 
                 switch($noun_2) {
                     case 'friend':
-                        
-                        $action = array_shift($uri);
-                        
-                        if($action) {
 
-                            switch($action) {
-                                case 'add':
+                        switch($verb) {
+                            case 'POST': 
+                                
+                                if(isset($_REQUEST['friend_email'])) {
 
-                                    switch($verb) {
+                                    $friend_email = $_REQUEST['friend_email'];
 
-                                        case 'POST':
-
-                                            if(isset($_REQUEST['friend_email'])) {
-
-                                                $friend_email = $_REQUEST['friend_email'];
-
-                                                $user = User::get($user_id);
-
-                                                $success = $user->add_friend_by_email($friend_email);
-
-                                                if($success) {
-                                                    echo 'Friend request sent!';
-                                                    exit_with_status_code(201);
-                                                }
-                                                else {
-                                                    echo 'User not found!';
-                                                    exit_with_status_code(404);
-                                                }
-
-                                            }
-                                            else {
-                                                echo 'The email of the friend you wish to add is required.';
-                                                exit_with_status_code(400);
-                                            }
-
-                                        case 'PUT': exit_with_status_code(405);
-
-                                        case 'GET': exit_with_status_code(405);
-
-                                        case 'DELETE': break;
-
-                                    }
-
-                                    break;
-                                case 'remove':
-
-                                    break;
-                            }
-                        }
-                        else {
-                            switch($verb) {
-                                case 'POST': break;
-                                case 'PUT': break;
-                                case 'GET':
-                                    
                                     $user = User::get($user_id);
-                                    
-                                    $friends = $user->get_friends_list();
-                                    
-                                    foreach($friends as $friend) {
+
+                                    $friend = $user->add_friend_by_email($friend_email);
+
+                                    if($friend) {
                                         echo $friend->to_json();
+                                        exit_with_status_code(201);
                                     }
-                                    
-                                    exit_with_status_code(200);
-                                    
-                                case 'DELETE': break;
-                            }
+                                    else {
+                                        echo 'User not found!';
+                                        exit_with_status_code(404);
+                                    }
+
+                                }
+                                else {
+                                    echo 'The email of the friend you wish to add is required.';
+                                    exit_with_status_code(400);
+                                }
+                                
+                            case 'PUT': break;
+                            case 'GET':
+
+                                $user = User::get($user_id);
+
+                                $friends = $user->get_friends_list();
+
+                                foreach($friends as $friend) {
+                                    echo $friend->to_json();
+                                }
+
+                                exit_with_status_code(200);
+
+                            case 'DELETE':
+                                
+                                if(isset($_REQUEST['friend_id'])) {
+
+                                    $user = User::get($user_id);
+
+                                    $success = $user->remove_friend($_REQUEST['friend_id']);
+
+                                    if($success) {
+                                        echo 'Successfully removed friend.';
+                                        exit_with_status_code(200);
+                                    }
+                                }
+                               else {
+                                   echo 'The ID of the friend you wish to remove is required.';
+                                   exit_with_status_code(400);
+                               }
+                                
                         }
                         
                         break;
