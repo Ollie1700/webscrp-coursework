@@ -233,51 +233,132 @@ switch($noun) {
                         
                         $action = array_shift($uri);
                         
-                        switch($action) {
-                            case 'add':
-                                
-                                switch($verb) {
+                        if($action) {
 
-                                    case 'POST':
-                                        
-                                        if(isset($_REQUEST['friend_email'])) {
-                                            
-                                            $friend_email = $_REQUEST['friend_email'];
-                                            
-                                            $user = User::get($user_id);
-                                            
-                                            $success = $user->add_friend_by_email($friend_email);
-                                            
-                                            if($success) {
-                                                echo 'Friend request sent!';
-                                                exit_with_status_code(201);
+                            switch($action) {
+                                case 'add':
+
+                                    switch($verb) {
+
+                                        case 'POST':
+
+                                            if(isset($_REQUEST['friend_email'])) {
+
+                                                $friend_email = $_REQUEST['friend_email'];
+
+                                                $user = User::get($user_id);
+
+                                                $success = $user->add_friend_by_email($friend_email);
+
+                                                if($success) {
+                                                    echo 'Friend request sent!';
+                                                    exit_with_status_code(201);
+                                                }
+                                                else {
+                                                    echo 'User not found!';
+                                                    exit_with_status_code(404);
+                                                }
+
                                             }
                                             else {
-                                                echo 'User not found!';
-                                                exit_with_status_code(404);
+                                                echo 'The email of the friend you wish to add is required.';
+                                                exit_with_status_code(400);
                                             }
-                                            
-                                        }
-                                        else {
-                                            echo 'The email of the friend you wish to add is required.';
-                                            exit_with_status_code(400);
-                                        }
-                                        
-                                    case 'PUT': exit_with_status_code(405);
 
-                                    case 'GET': exit_with_status_code(405);
-                                        
-                                    case 'DELETE': break;
+                                        case 'PUT': exit_with_status_code(405);
 
-                                }
-                                
-                                break;
-                            case 'remove':
-                                
-                                break;
+                                        case 'GET': exit_with_status_code(405);
+
+                                        case 'DELETE': break;
+
+                                    }
+
+                                    break;
+                                case 'remove':
+
+                                    break;
+                            }
+                        }
+                        else {
+                            switch($verb) {
+                                case 'POST': break;
+                                case 'PUT': break;
+                                case 'GET':
+                                    
+                                    $user = User::get($user_id);
+                                    
+                                    $friends = $user->get_friends_list();
+                                    
+                                    foreach($friends as $friend) {
+                                        echo $friend->to_json();
+                                    }
+                                    
+                                    exit_with_status_code(200);
+                                    
+                                case 'DELETE': break;
+                            }
                         }
                         
                         break;
+                        
+                    case 'room':
+                        switch($verb) {
+                            case 'POST':
+                                
+                                $user = User::get($user_id);
+                                
+                                if(isset($_REQUEST['room_name'])) {
+                                    $room_name = $_REQUEST['room_name'];
+                                    $success = $user->join_room_by_name($room_name);
+                                    if($success) {
+                                        echo 'Successfully joined ' . $room_name . '.';
+                                        exit_with_status_code(201);
+                                    }
+                                    else {
+                                        echo 'Room not found.';
+                                        exit_with_status_code(404);
+                                    }
+                                }
+                                else {
+                                    echo 'The name of the room you wish to join is required';
+                                    exit_with_status_code(400);
+                                }
+                                
+                            case 'PUT': break;
+                            case 'GET':
+                                
+                                $user = User::get($user_id);
+                                
+                                $rooms = $user->get_rooms_list();
+                                
+                                foreach($rooms as $room) {
+                                    echo $room->to_json();
+                                }
+                                
+                                exit_with_status_code(200);
+                                
+                            case 'DELETE': 
+                                
+                                $user = User::get($user_id);
+                                
+                                if(isset($_REQUEST['room_id'])) {
+                                    $room_id = $_REQUEST['room_id'];
+                                    $success = $user->leave_room($room_id);
+                                    if($success) {
+                                        echo 'Room left.';
+                                        exit_with_status_code(200);
+                                    }
+                                    else {
+                                        echo 'Room not found or you are not a part of that room.';
+                                        exit_with_status_code(404);
+                                    }
+                                }
+                                else {
+                                    echo 'The ID of the room you wish to leave is required.';
+                                    exit_with_status_code(400);
+                                }
+                                
+                        }
                 }
                 
             }

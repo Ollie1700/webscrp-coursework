@@ -73,6 +73,44 @@ class User {
         );
     }
     
+    public function join_room_by_name($room_name) {
+        global $db;
+        $sql = $db->prepare("SELECT room_id FROM room WHERE room_name=?");
+        $success = $sql->execute(array($room_name));
+        if($success && $sql->rowCount()) {
+            $row = $sql->fetch(PDO::FETCH_ASSOC);
+            return $this->join_room($row['room_id']);
+        }
+        return false;
+    }
+    
+    public function join_room($room_id) {
+        global $db;
+        $sql = $db->prepare("INSERT INTO user_in_room(`user_id`, `room_id`) VALUES(?, ?)");
+        $success = $sql->execute(array($this->user_id, $room_id));
+        if($success && $sql->rowCount()) {
+            $this->rooms_list[] = Room::get($room_id);
+            return true;
+        }
+        return false;
+    }
+    
+    public function leave_room($room_id) {
+        global $db;
+        $sql = $db->prepare("DELETE FROM user_in_room WHERE room_id=? AND user_id=?");
+        $success = $sql->execute(array($room_id, $this->user_id));
+        if($success && $sql->rowCount()) {
+            foreach($this->rooms_list as $key => $room) {
+                if($room_id == $key) {
+                    unset($this->rooms_list[$key]);
+                    break;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+    
     public function add_friend_by_email($friend_email) {
         global $db;
         $sql = $db->prepare("SELECT user_id FROM user WHERE user_email=?");

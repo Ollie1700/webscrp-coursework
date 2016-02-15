@@ -7,6 +7,14 @@
         
         <link rel="stylesheet" href="style.css" />
         
+        <script>
+            <!--
+                // Declare the current user's ID globally
+                window.current_user_id = <?php echo isset($CURRENT_USER) ? $CURRENT_USER->get_user_id() : 'false'; ?>
+                
+            -->
+        </script>
+        
         <script src="lib/ajax.js"></script>
         
     </head>

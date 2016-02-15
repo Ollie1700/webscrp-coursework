@@ -10,13 +10,36 @@
     
     <h2>Account Details</h2>
     
-    <form class="big-form" id="update-profile-form">
+    <form id="update-profile-form">
         <table>
             <tr>
                 <td style="width: 80%;">
-                    <input id="update-profile-form-email" type="text" name="email" placeholder="Email" value="<?php echo $CURRENT_USER->get_user_email(); ?>" />
-                    <input id="update-profile-form-first-name" type="text" name="first_name" placeholder="First Name" value="<?php echo $CURRENT_USER->get_user_first_name(); ?>" />
-                    <input id="update-profile-form-last-name" type="text" name="last_name" placeholder="Last Name" value="<?php echo $CURRENT_USER->get_user_last_name(); ?>" />
+                    <table>
+                        <tr>
+                            <td>
+                                Email:
+                            </td>
+                            <td>
+                                <input id="update-profile-form-email" type="text" name="email" placeholder="Email" value="<?php echo $CURRENT_USER->get_user_email(); ?>" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                First Name:
+                            </td>
+                            <td>
+                                <input id="update-profile-form-first-name" type="text" name="first_name" placeholder="First Name" value="<?php echo $CURRENT_USER->get_user_first_name(); ?>" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Last Name:
+                            </td>
+                            <td>
+                                <input id="update-profile-form-last-name" type="text" name="last_name" placeholder="Last Name" value="<?php echo $CURRENT_USER->get_user_last_name(); ?>" />
+                            </td>
+                        </tr>
+                    </table>
                     <input id="update-profile-user-id" type="hidden" value="<?php echo $CURRENT_USER->get_user_id(); ?>" />
                     <input id="submit-update-profile-form" type="submit" name="submit" value="Update Profile" />
                 </td>
@@ -31,7 +54,7 @@
 
     <h2>Friends</h2>
     
-    
+    <div id="friends-list-container"></div>
     
     <h3>Add a friend:</h3>
     
@@ -44,6 +67,19 @@
     <span id="add-friend-form-feedback" style="color:red;"></span>
 
     <h2>Rooms</h2>
+    
+    <form id="join-room-form">
+        <input id="join-room-input-room" type="text" placeholder="Room name" />
+        <input id="join-room-input-submit" type="submit" value="Join room" />
+    </form>
+
+    <p>
+        You are a member of the following rooms:
+    </p>
+
+    <span id="user-rooms-info"></span>
+
+    <div id="user-rooms-list"></div>
 
 <?php else : ?>
 
