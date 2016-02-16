@@ -134,6 +134,7 @@ h1 span.subtitle {
     width: 100%;
     padding: 5px 0 20px 0;
     border-bottom: 1px solid #555;
+    word-wrap: break-word;
 }
 
 .channel-chat span.message .sender {
@@ -251,6 +252,17 @@ form.inline-form input {
 }
 
 /**
+ * IMAGES
+ */
+img.emote {
+    width: 30px;
+}
+
+img.embedded-image {
+    max-width: 100%;
+}
+
+/**
  * MISC
  */
 ::-webkit-scrollbar {
@@ -267,8 +279,6 @@ form.inline-form input {
     border-radius: 2px;
     background-color: rgb(224, 224, 235);
 }
-
-
 
 
 

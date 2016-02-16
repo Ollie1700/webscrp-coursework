@@ -57,30 +57,44 @@ foreach($rooms as $room) {
                     
                     var timestamp = date.getHours() + ':' + date.getMinutes(); // + ', ' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear();
                     
-                    Ajax('POST', '/room/<?php echo $room->get_room_id(); ?>/message', ['user_id=<?php echo $CURRENT_USER->get_user_id(); ?>', 'message=' + channel_chat_input.value, 'timestamp=' + timestamp], function(r){});
+                    Ajax('POST', '/room/<?php echo $room->get_room_id(); ?>/message', ['user_id=<?php echo $CURRENT_USER->get_user_id(); ?>', 'message=' + channel_chat_input.value, 'timestamp=' + timestamp], function(r, c){
+                        
+                        var objs = get_json_objects_from_result(r);
+                        
+                        if(objs) {
+                            var
+                                msg = objs[0],
+                                message_span = document.createElement("span"),
+                                message_sender_span = document.createElement("span"),
+                                message_sender_text_node = document.createTextNode(msg.message_timestamp + ' | ' + msg.message_sender_name);
+
+                            message_span.className += "message";
+                            message_sender_span.className += "sender";
+
+                            message_sender_span.appendChild(message_sender_text_node);
+
+                            message_span.innerHTML = msg.message_message;
+                            message_span.appendChild(message_sender_span);
+                            channel_chat.appendChild(message_span);
+
+                            channel_chat_input.value = '';
+                            
+                            channel_chat.scrollTop = channel_chat.scrollHeight;
+                        }
+                        else {
+                            var
+                                error_span = document.createElement("span"),
+                                error_message = document.createTextNode(r);
+                            error_span.style.color = 'red';
+                            error_span.appendChild(error_message);
+                            channel_chat.appendChild(error_span);
+                        }
+                        
+                    });
                     
-                    var
-                        message_span = document.createElement("span"),
-                        message_sender_span = document.createElement("span"),
-                        message_text_node = document.createTextNode(channel_chat_input.value),
-                        message_sender_text_node = document.createTextNode(timestamp + ' | <?php echo $CURRENT_USER->get_user_first_name() . ' ' . $CURRENT_USER->get_user_last_name(); ?>');
-                    
-                    message_span.className += "message";
-                    message_sender_span.className += "sender";
-                    
-                    message_sender_span.appendChild(message_sender_text_node);
-                    
-                    message_span.appendChild(message_text_node);
-                    message_span.appendChild(message_sender_span);
-                    channel_chat.appendChild(message_span);
-                    
-                    channel_chat_input.value = '';
-                    
-                    channel_chat.scrollTop = channel_chat.scrollHeight;
-                    
+                    // Prevent the default form submission
                     e.preventDefault();
-                    
-                    return false; // Prevent the default form submission
+                    return false;
                 }
             });
         })();
