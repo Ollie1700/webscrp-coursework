@@ -89,6 +89,7 @@ switch($noun) {
                                         ':D',
                                         ':O',
                                         ':l',
+                                        'Kappa',
                                     );
                                     
                                     $emote_images = array(
@@ -97,6 +98,7 @@ switch($noun) {
                                         '<img class="emote" src="img/emote/very_happy.png">',
                                         '<img class="emote" src="img/emote/surprised.png">',
                                         '<img class="emote" src="img/emote/straight_face.png">',
+                                        '<img class="emote" src="img/emote/grey_face_no_space.png">',
                                     );
                                     
                                     $message_message = str_replace($emote_code, $emote_images, $message_message);
@@ -209,14 +211,12 @@ switch($noun) {
                     
                 case 'POST':
                     
-                    $room_name = $_REQUEST['name'];
-                    
-                    if(empty($room_name)) {
-                        echo 'Room name cannot be null.';
+                    if(!isset($_REQUEST['name']) || !isset($_REQUEST['admin_id'])) {
+                        echo 'Room name and admin ID are required.';
                         exit_with_status_code(400);
                     }
                     else {
-                        $room = Room::create($room_name);
+                        $room = Room::create($_REQUEST['name'], $_REQUEST['admin_id']);
                         if($room) {
                             echo 'Room successfully created.';
                             exit_with_status_code(201);
@@ -473,19 +473,26 @@ switch($noun) {
                     $email = $_REQUEST['email'];
                     $first_name = $_REQUEST['first_name'];
                     $last_name = $_REQUEST['last_name'];
+                    $password = $_REQUEST['password'];
                     
-                    if(empty($email) || empty($first_name) || empty($last_name)) {
-                        echo 'Email, first name and last name can\'t be empty.';
+                    if(empty($email) || empty($first_name) || empty($last_name) || empty($password)) {
+                        echo 'Email, password, first name and last name can\'t be empty.';
                         exit_with_status_code(400);
                     }
                     else {
-                        $user = User::create($email, $first_name, $last_name, $password);
-                        if($user) {
-                            echo 'User successfully created.';
-                            exit_with_status_code(201);
+                        if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            $user = User::create($email, $first_name, $last_name, $password);
+                            if($user) {
+                                echo 'User successfully created.';
+                                exit_with_status_code(201);
+                            }
+                            else {
+                                echo 'Error creating user.';
+                                exit_with_status_code(400);
+                            }
                         }
                         else {
-                            echo 'Error creating user.';
+                            echo 'Please enter a valid email address.';
                             exit_with_status_code(400);
                         }
                     }

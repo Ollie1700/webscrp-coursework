@@ -6,6 +6,7 @@ class Room {
 	
 	private $room_id;
 	private $room_name;
+    private $room_admin_id;
     
     public function __construct($room_id, $room_name) {
         $this->room_id = $room_id;
@@ -44,10 +45,10 @@ class Room {
         );
     }
     
-    public static function create($room_name) {
+    public static function create($room_name, $admin_id) {
         global $db;
-        $sql = $db->prepare("INSERT INTO room(`room_name`) VALUES(?)");
-        $success = $sql->execute(array($room_name));
+        $sql = $db->prepare("INSERT INTO room(`room_name`, `room_admin_id`) VALUES(?, ?)");
+        $success = $sql->execute(array($room_name, $admin_id));
         return $success && $sql->rowCount() ? new Room($db->lastInsertId(), $room_name) : false;
     }
     

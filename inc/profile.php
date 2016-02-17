@@ -68,7 +68,7 @@
     
     <form id="join-room-form">
         <input id="join-room-input-room" type="text" placeholder="Room name" />
-        <input id="join-room-input-submit" type="submit" value="Join room" />
+        <input id="join-room-input-submit" type="submit" value="Create/Join room" />
     </form>
 
     <p>

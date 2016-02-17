@@ -66,7 +66,7 @@ foreach($rooms as $room) {
                                 msg = objs[0],
                                 message_span = document.createElement("span"),
                                 message_sender_span = document.createElement("span"),
-                                message_sender_text_node = document.createTextNode(msg.message_timestamp + ' | ' + msg.message_sender_name);
+                                message_sender_text_node = document.createTextNode('Sent at ' + msg.message_timestamp + ' | ' + msg.message_sender_name);
 
                             message_span.className += "message";
                             message_sender_span.className += "sender";
@@ -79,12 +79,13 @@ foreach($rooms as $room) {
 
                             channel_chat_input.value = '';
                             
+                            channel_chat.scrollIntoView(message_span);
                             channel_chat.scrollTop = channel_chat.scrollHeight;
                         }
                         else {
                             var
                                 error_span = document.createElement("span"),
-                                error_message = document.createTextNode(r);
+                                error_message = document.createTextNode("Failed to send message. Please try again later.");
                             error_span.style.color = 'red';
                             error_span.appendChild(error_message);
                             channel_chat.appendChild(error_span);
@@ -112,13 +113,13 @@ foreach($rooms as $room) {
                 
                 Ajax('GET', '/room/<?php echo $room->get_room_id(); ?>/message', ['limit=' + limit], function(r) {
                     
+                    console.log(r);
+                    
                     if(!r) return;
                     
                     var 
                         objs = get_json_objects_from_result(r),
                         latest_message;
-                    
-                    if(objs == null) return;
                     
                     for(var i = 0; i < objs.length; i++) {
                         
@@ -138,7 +139,6 @@ foreach($rooms as $room) {
                         var
                             message_span = document.createElement("span"),
                             message_sender_span = document.createElement("span"),
-                            message_text_node = document.createTextNode(objs[i].message_message),
                             message_sender_text_node = document.createTextNode(objs[i].message_timestamp + ' | ' + objs[i].message_sender_name);
                         
                         message_span.className += "message";
@@ -146,7 +146,7 @@ foreach($rooms as $room) {
                         
                         message_sender_span.appendChild(message_sender_text_node);
                         
-                        message_span.appendChild(message_text_node);
+                        message_span.innerHTML = objs[i].message_message;
                         message_span.appendChild(message_sender_span);
                         channel_chat.appendChild(message_span);
                         
@@ -162,7 +162,6 @@ foreach($rooms as $room) {
                     
                     // Once we reach this part of the code, the initial pass has completed
                     initial_pass = false;
-                    
                 });
                 
             }, 2000);

@@ -197,6 +197,17 @@ h1 span.subtitle {
     display: none;
 }
 
+#register-form-feedback {
+    font-weight: bold;
+    color: red;
+    display: block;
+    margin-top: 10px;
+}
+
+#successfully-created-account {
+    margin-top: 20px;
+}
+
 form input {
     font-family: 'Roboto', sans-serif;
 }
