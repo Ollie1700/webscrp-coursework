@@ -79,7 +79,6 @@ foreach($rooms as $room) {
 
                             channel_chat_input.value = '';
                             
-                            channel_chat.scrollIntoView(message_span);
                             channel_chat.scrollTop = channel_chat.scrollHeight;
                         }
                         else {
@@ -111,11 +110,7 @@ foreach($rooms as $room) {
             
             setInterval(function(){
                 
-                Ajax('GET', '/room/<?php echo $room->get_room_id(); ?>/message', ['limit=' + limit], function(r) {
-                    
-                    console.log(r);
-                    
-                    if(!r) return;
+                Ajax('GET', '/room/<?php echo $room->get_room_id(); ?>/message', ['limit=' + limit], function(r, c) {
                     
                     var 
                         objs = get_json_objects_from_result(r),
