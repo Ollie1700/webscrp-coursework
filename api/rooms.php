@@ -134,7 +134,7 @@ foreach($rooms as $room) {
                         var
                             message_span = document.createElement("span"),
                             message_sender_span = document.createElement("span"),
-                            message_sender_text_node = document.createTextNode(objs[i].message_timestamp + ' | ' + objs[i].message_sender_name);
+                            message_sender_text_node = document.createTextNode('Received at ' + objs[i].message_timestamp + ' | ' + objs[i].message_sender_name);
                         
                         message_span.className += "message";
                         message_sender_span.className += "sender";

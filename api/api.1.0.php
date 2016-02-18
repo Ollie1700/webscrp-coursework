@@ -345,9 +345,18 @@ switch($noun) {
                                 
                                 if(isset($_REQUEST['room_name'])) {
                                     $room_name = $_REQUEST['room_name'];
+                                    
+                                    // Check if the user is already part of this room
+                                    foreach($user->get_rooms_list() as $r) {
+                                        if($r->get_room_name() == $room_name) {
+                                            echo 'You are already in this room.';
+                                            exit_with_status_code(409);
+                                        }
+                                    }
+                                    
                                     $success = $user->join_room_by_name($room_name);
                                     if($success) {
-                                        echo 'Successfully joined ' . $room_name . '.';
+                                        echo $success->to_json();
                                         exit_with_status_code(201);
                                     }
                                     else {
@@ -381,7 +390,7 @@ switch($noun) {
                                     $room_id = $_REQUEST['room_id'];
                                     $success = $user->leave_room($room_id);
                                     if($success) {
-                                        echo 'Room left.';
+                                        echo $success->to_json();
                                         exit_with_status_code(200);
                                     }
                                     else {

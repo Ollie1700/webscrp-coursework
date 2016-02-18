@@ -89,8 +89,9 @@ class User {
         $sql = $db->prepare("INSERT INTO user_in_room(`user_id`, `room_id`) VALUES(?, ?)");
         $success = $sql->execute(array($this->user_id, $room_id));
         if($success && $sql->rowCount()) {
-            $this->rooms_list[] = Room::get($room_id);
-            return true;
+            $new_room = Room::get($room_id);
+            $this->rooms_list[] = $new_room;
+            return $new_room;
         }
         return false;
     }
@@ -101,12 +102,13 @@ class User {
         $success = $sql->execute(array($room_id, $this->user_id));
         if($success && $sql->rowCount()) {
             foreach($this->rooms_list as $key => $room) {
-                if($room_id == $key) {
+                if($room_id == $room->get_room_id()) {
+                    $temp = $this->rooms_list[$key];
+                    $left_room = new Room($temp->get_room_id(), $temp->get_room_name());
                     unset($this->rooms_list[$key]);
-                    break;
+                    return $left_room;
                 }
             }
-            return true;
         }
         return false;
     }
