@@ -9,6 +9,10 @@
         
         <script>
             <!--
+                
+                window.chatapp = {};
+                window.chatapp.joined_rooms = [];
+                
                 // Declare the current user's ID globally
                 window.current_user_id = <?php echo isset($CURRENT_USER) ? $CURRENT_USER->get_user_id() : 'false'; ?>
                 
@@ -40,7 +44,7 @@
         </header>
         
         <section id="channel-container" class="channel-container">
-            <?php if(isset($CURRENT_USER)) : include 'api/rooms.php'; else : ?>
+            <?php if(!isset($CURRENT_USER)) : ?>
                 
                 <div class="user-login-container">
                     
@@ -65,6 +69,7 @@
             </div>
         </div>
         
+        <script src="lib/room.js"></script>
         <script src="lib/user.js"></script>
     </body>
 </html>
