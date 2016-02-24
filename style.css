@@ -179,9 +179,31 @@ h1 span.subtitle {
     border: 1px black solid;
 }
 
+.drag-target {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: rgba(1, 1, 1, 0.7);
+    text-align: center;
+    color: white;
+    font-size: 32pt;
+    padding-top: 20%;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
 /**
  * LOGIN, REGISTER AND PROFILE
  */
+
+table tr td {
+    /*vertical-align: top;*/
+}
 
 .user-login-container {
     width: 50%;
@@ -232,6 +254,7 @@ form.inline-form input {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
+    z-index: 200;
 }
 
 #profile-container {
@@ -245,6 +268,7 @@ form.inline-form input {
     border-radius: 10px;
     background-color: white;
     transition: margin 0.5s;
+    z-index: 300;
 }
 
 #profile-container h1, h2, h3 {
@@ -260,6 +284,14 @@ form.inline-form input {
     top: 10px;
     right: 20px;
     cursor: pointer;
+}
+
+#profile-pic-upload {
+    font-size: 12pt;
+    text-align: center;
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 10px;
 }
 
 /**

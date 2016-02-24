@@ -12,9 +12,10 @@
                 
                 window.chatapp = {};
                 window.chatapp.joined_rooms = [];
+                window.chatapp.friends_list = [];
                 
                 // Declare the current user's ID globally
-                window.current_user_id = <?php echo isset($CURRENT_USER) ? $CURRENT_USER->get_user_id() : 'false'; ?>
+                window.current_user_id = <?php echo isset($CURRENT_USER) ? $CURRENT_USER->get_user_id() : 'false'; ?>;
                 
             -->
         </script>
@@ -69,6 +70,7 @@
             </div>
         </div>
         
+        <script src="lib/drag.js"></script>
         <script src="lib/room.js"></script>
         <script src="lib/user.js"></script>
     </body>

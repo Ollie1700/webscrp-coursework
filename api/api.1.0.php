@@ -137,6 +137,38 @@ switch($noun) {
                             }
                         }
                         break;
+                        
+                    case 'upload':
+                        
+                        switch($verb) {
+                            case 'POST': 
+                                
+                                foreach($_FILES as $file) {
+                                    $info = pathinfo($file['name']);
+                                    $ext = strtolower($info['extension']); // make lower case to avoid confusion with checks later
+                                    
+                                    // Check if the extension is valid
+                                    if($ext == 'jpg' ||
+                                       $ext == 'gif' ||
+                                       $ext == 'png') { // Can add more later
+                                        
+                                        move_uploaded_file($file['tmp_name'], '../uploads/' . $file['name']);
+                                        echo $file['name'] . ' uploaded.\n';
+                                    }
+                                    else {
+                                        echo 'Didn\'t upload ' . $file['name'] . ' - it was not of a valid filetype.\n';
+                                        echo 'You are only allowed to upload jpg, gif and png files.';
+                                    }
+                                }
+                                
+                                exit_with_status_code(201);
+                                
+                            case 'PUT': break;
+                            case 'GET': break;
+                            case 'DELETE': break;
+                        }
+                        
+                        break;
                 }
                 
             }
@@ -306,6 +338,11 @@ switch($noun) {
                             case 'GET':
 
                                 $user = User::get($user_id);
+                                
+                                if(!$user) {
+                                    echo "Couldn't get user.";
+                                    exit_with_status_code(500);
+                                }
 
                                 $friends = $user->get_friends_list();
 
@@ -373,6 +410,11 @@ switch($noun) {
                             case 'GET':
                                 
                                 $user = User::get($user_id);
+                                
+                                if(!$user) {
+                                    echo "Couldn't get user.";
+                                    exit_with_status_code(500);
+                                }
                                 
                                 $rooms = $user->get_rooms_list();
                                 

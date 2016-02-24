@@ -13,7 +13,7 @@
     <form id="update-profile-form">
         <table>
             <tr>
-                <td style="width: 80%;">
+                <td style="width: 60%;">
                     <table>
                         <tr>
                             <td>
@@ -43,8 +43,13 @@
                     <input id="update-profile-user-id" type="hidden" value="<?php echo $CURRENT_USER->get_user_id(); ?>" />
                     <input id="submit-update-profile-form" type="submit" name="submit" value="Update Profile" />
                 </td>
-                <td style="width: 20%;">
-                    Profile pic
+                <td style="width: 40%;">
+                    <div id="profile-pic-upload">
+                        <img src="img/upload_dark.png" width="100" height="100">
+                        <p>
+                            Drag your profile picture here.
+                        </p>
+                    </div>
                 </td>
             </tr>
         </table>
