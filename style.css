@@ -286,12 +286,38 @@ form.inline-form input {
     cursor: pointer;
 }
 
+/**
+ * UPLOADS
+ */
+
 #profile-pic-upload {
     font-size: 12pt;
     text-align: center;
     border: 1px solid grey;
     border-radius: 5px;
     padding: 10px;
+}
+
+#profile-pic-upload img {
+    max-width: 100%;
+}
+
+/* ANIMATIONS */
+
+@-webkit-keyframes pulse-animation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes pulse-animation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.pulse {
+    -webkit-animation: pulse-animation 1s infinite;
 }
 
 /**

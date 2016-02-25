@@ -446,6 +446,64 @@ switch($noun) {
                                 }
                                 
                         }
+                        
+                    case 'profilepic':
+                        switch($verb) {
+                            case 'POST':
+                                
+                                $user = User::get($user_id);
+                                
+                                foreach($_FILES as $file) {
+                                    $info = pathinfo($file['name']);
+                                    $ext = strtolower($info['extension']); // make lower case to avoid confusion with checks later
+                                    
+                                    // Check if the extension is valid
+                                    if($ext == 'jpg' ||
+                                       $ext == 'gif' ||
+                                       $ext == 'png') { // Can add more later
+                                        
+                                        $file_name = md5($user_id) . '.' . $ext;
+                                        $upload_path = '../uploads/profile_pics/' . $file_name;
+                                        
+                                        move_uploaded_file($file['tmp_name'], $upload_path);
+                                        
+                                        $success = $user->set_profile_pic($file_name);
+                                        
+                                        if($success) {
+                                            echo $user->get_user_profile_pic_img();
+                                            exit_with_status_code(201);
+                                        }
+                                        else {
+                                            echo 'Failed to set the profile picture in the database after it was uploaded.';
+                                            exit_with_status_code(500);
+                                        }
+                                    }
+                                    else {
+                                        echo 'Didn\'t upload ' . $file['name'] . ' - it was not of a valid filetype.\n';
+                                        echo 'You are only allowed to upload jpg, gif and png files.';
+                                        exit_with_status_code(400);
+                                    }
+                                }
+                                
+                            case 'PUT': break;
+                            case 'GET':
+                                
+                                $user = User::get($user_id);
+                                
+                                $has_profile_pic = $user->get_user_profile_pic();
+                                
+                                if($has_profile_pic) {
+                                    echo $user->get_user_profile_pic_img();
+                                    exit_with_status_code(200);
+                                }
+                                else {
+                                    echo 'User does not have profile picture.';
+                                    exit_with_status_code(404);
+                                }
+                                
+                            case 'DELETE': break;
+                        }
+                        break;
                 }
                 
             }

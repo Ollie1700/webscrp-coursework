@@ -6,6 +6,7 @@ class User {
     private $user_email;
     private $user_first_name;
     private $user_last_name;
+    private $user_profile_pic = false; // User doesn't have a profile pic by default
     
     private $friends_list;
     private $rooms_list;
@@ -34,6 +35,14 @@ class User {
         while($row = $sql->fetch(PDO::FETCH_ASSOC)) {
             $this->rooms_list[] = Room::get($row['room_id']);
         }
+        
+        // Get this user's profile pic
+        $sql = $db->prepare("SELECT `user_profile_pic` FROM user WHERE user_id=?");
+        $success = $sql->execute(array($user_id));
+        if($success && $sql->rowCount()) {
+            $row = $sql->fetch(PDO::FETCH_ASSOC);
+            $this->user_profile_pic = $row['user_profile_pic'];
+        }
     }
     
     public function get_user_id() {
@@ -60,6 +69,18 @@ class User {
         return $this->rooms_list;
     }
     
+    public function get_user_profile_pic() {
+        return $this->user_profile_pic;
+    }
+    
+    public function get_user_profile_pic_img() {
+        // We add a dummy query string on to the image to prevent the browser from using
+        // the cached version of the image. The reason for this is that if we upload a new
+        // profile picture, it won't dynamically change client-side because it just takes the
+        // cached version of the image.
+        return '<img src="uploads/profile_pics/' . $this->user_profile_pic . '?dummy='.time().'">';
+    }
+    
     public function to_json() {
         return json_encode(
             array(
@@ -69,8 +90,21 @@ class User {
                 'user_last_name' => $this->user_last_name,
                 'friends_list' => $this->friends_list,
                 'rooms_list' => $this->rooms_list,
+                'user_profile_pic' => $this->user_profile_pic,
+                'user_profile_pic_img' => $this->get_user_profile_pic_img(),
             )
         );
+    }
+    
+    public function set_profile_pic($profile_pic) {
+        global $db;
+        $sql = $db->prepare("UPDATE user SET user_profile_pic=? WHERE user_id=?");
+        $success = $sql->execute(array($profile_pic, $this->user_id));
+        if($success) {
+            $this->user_profile_pic = $profile_pic;
+            return $this->get_user_profile_pic_img();
+        }
+        return false;
     }
     
     public function join_room_by_name($room_name) {

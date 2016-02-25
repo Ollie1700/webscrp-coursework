@@ -46,10 +46,10 @@
                 <td style="width: 40%;">
                     <div id="profile-pic-upload">
                         <img src="img/upload_dark.png" width="100" height="100">
-                        <p>
-                            Drag your profile picture here.
-                        </p>
                     </div>
+                    <p style="text-align:center;">
+                        Drag and drop your profile picture above to upload it.
+                    </p>
                 </td>
             </tr>
         </table>
@@ -82,7 +82,7 @@
 
     <span id="user-rooms-info"></span>
 
-    <div id="user-rooms-list"></div>
+    <div id="user-rooms-list"><table id="user-rooms-table"></table></div>
 
 <?php else : ?>
 
