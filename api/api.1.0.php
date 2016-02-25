@@ -118,6 +118,11 @@ switch($noun) {
                                     
                                     $room = Room::get($room_id);
                                     
+                                    if(!$room) { 
+                                        echo 'Could not get room with id of ' . $room_id . '.';
+                                        exit_with_status_code(500);
+                                    }
+                                    
                                     $messages = $room->get_messages();
                                     
                                     if($limit >= count($messages)) {

@@ -197,6 +197,18 @@ h1 span.subtitle {
     box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
+.disconnect-message {
+    display: none;
+    position: absolute;
+    width: 258px;
+    height: 38px;
+    font-size: 9pt;
+    text-align: center;
+    padding-top: 5px;
+    color: white;
+    background-color: rgb(167, 26, 26);
+}
+
 /**
  * LOGIN, REGISTER AND PROFILE
  */
