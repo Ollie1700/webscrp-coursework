@@ -209,6 +209,21 @@ h1 span.subtitle {
     background-color: rgb(167, 26, 26);
 }
 
+.message-controls {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    display: inline-block;
+    color: #555;
+    font-style: italic;
+    font-size: 0.7em;
+}
+
+.message-editor {
+    display: none;
+    border-radius: 5px;
+}
+
 /**
  * LOGIN, REGISTER AND PROFILE
  */

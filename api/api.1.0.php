@@ -37,12 +37,33 @@ switch($noun) {
                         if($message_id) {
                             switch($verb) {
                                 case 'POST':
-
+                                    
+                                    echo 'Cannot overwrite existing message';
+                                    exit_with_status_code(409);
+                                    
                                 case 'PUT':
-
-                                case 'GET':
-
-                                case 'DELETE':
+                                    
+                                    $user_id = $_REQUEST['user_id'];
+                                    $message_message = $_REQUEST['message_message'];
+                                    $message_timestamp = $_REQUEST['message_timestamp'];
+                                    
+                                    if(!isset($user_id) || !isset($message_message) || !isset($message_timestamp)) {
+                                        echo 'You must provide user id, message and timestamp to update a message.';
+                                        exit_with_status_code(400);
+                                    }
+                                    
+                                    $message = Message::update($message_id, $user_id, $message_message, $message_timestamp);
+                                    
+                                    if(!$message) {
+                                        echo 'Failed to update message';
+                                        exit_with_status_code(500);
+                                    }
+                                    
+                                    echo $message->to_json();
+                                    exit_with_status_code(201);
+                                    
+                                case 'GET': break;
+                                case 'DELETE': break;
                             }
                         }
                         else {
