@@ -132,7 +132,7 @@ h1 span.subtitle {
     display: inline-block;
     position: relative;
     width: 100%;
-    padding: 5px 0 20px 0;
+    padding: 5px 0 25px 0;
     border-bottom: 1px solid #555;
     word-wrap: break-word;
 }
@@ -215,13 +215,49 @@ h1 span.subtitle {
     left: 5px;
     display: inline-block;
     color: #555;
-    font-style: italic;
     font-size: 0.7em;
+}
+
+.message-controls img {
+    width: 8px;
+    height: 8px;
+    cursor: pointer;
 }
 
 .message-editor {
     display: none;
+    border-radius: 3px;
+}
+
+.gallery-view-button {
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+#room-gallery {
+    display: none;
+    position: absolute;
+    top: 15%;
+    z-index: 100;
+    border: 1px solid black;
     border-radius: 5px;
+    padding: 10px;
+    background-color: white;
+    max-width: 50%;
+    left: 25%;
+}
+
+#room-gallery-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-weight: bold;
+    font-size: 30pt;
+    cursor: pointer;
 }
 
 /**

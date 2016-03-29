@@ -52,6 +52,8 @@ switch($noun) {
                                         exit_with_status_code(400);
                                     }
                                     
+                                    $message_message = parse_message($message_message);
+                                    
                                     $message = Message::update($message_id, $user_id, $message_message, $message_timestamp);
                                     
                                     if(!$message) {
@@ -79,52 +81,7 @@ switch($noun) {
                                         exit_with_status_code(400);
                                     }
                                     
-                                    // Parse the message for emotes, images and links //
-                                    
-                                    // Links
-                                    
-                                    $links = explode('http', $message_message);
-                                    
-                                    foreach($links as $link) {
-                                        if(empty($link)) continue;
-                                        
-                                        $str = explode(' ', $link)[0];
-                                        
-                                        // Image
-                                        $img_extension = substr($str, -4);
-                                        
-                                        if($img_extension == '.jpg' || $img_extension == '.gif' || $img_extension == '.png') {
-                                            $message_message = str_replace('http' . $str, '<img class="embedded-image" src="http'.$str.'">', $message_message);
-                                        }
-                                        // Normal link
-                                        else {
-                                            $message_message = str_replace('http' . $str, '<a href="http'.$str.'" target="_blank">http'.$str.'</a>', $message_message);
-                                        }
-                                    }
-                                    
-                                    // Emotes
-                                    
-                                    $emote_code = array(
-                                        ':)',
-                                        ':(',
-                                        ':D',
-                                        ':O',
-                                        ':l',
-                                        'Kappa',
-                                    );
-                                    
-                                    $emote_images = array(
-                                        '<img class="emote" src="img/emote/happy.png">',
-                                        '<img class="emote" src="img/emote/sad.png">',
-                                        '<img class="emote" src="img/emote/very_happy.png">',
-                                        '<img class="emote" src="img/emote/surprised.png">',
-                                        '<img class="emote" src="img/emote/straight_face.png">',
-                                        '<img class="emote" src="img/emote/grey_face_no_space.png">',
-                                    );
-                                    
-                                    $message_message = str_replace($emote_code, $emote_images, $message_message);
-                                    
-                                    // END PARSING //
+                                    $message_message = parse_message($message_message);
                                     
                                     $created_message = Message::create($room_id, $user_id, $message_message, $timestamp);
                                     echo $created_message->to_json();
@@ -159,7 +116,7 @@ switch($noun) {
                                     
                                     exit_with_status_code(200);
 
-                                case 'DELETE':
+                                case 'DELETE': break;
                             }
                         }
                         break;
@@ -668,3 +625,85 @@ switch($noun) {
         break;
     
 }
+
+/**
+ * Parses a message for links, images, emotes, and makes the message html safe
+ */
+function parse_message($message) {
+    $message_message = $message;
+    
+    // Turn all tags into html safe
+    $message_message = str_replace('<', '&lt;', $message_message);
+    $message_message = str_replace('>', '&gt;', $message_message);
+
+    // Parse the message for emotes, images and links //
+
+    // Links
+
+    $links = explode('http', $message_message);
+
+    foreach($links as $link) {
+        if(empty($link)) continue;
+
+        $str = explode(' ', $link)[0];
+
+        // Image
+        $img_extension = substr($str, -4);
+
+        if($img_extension == '.jpg' || $img_extension == '.gif' || $img_extension == '.png') {
+            $message_message = str_replace('http' . $str, '<img class="embedded-image" src="http'.$str.'">', $message_message);
+        }
+        // Normal link
+        else {
+            $message_message = str_replace('http' . $str, '<a href="http'.$str.'" target="_blank">http'.$str.'</a>', $message_message);
+        }
+    }
+
+    // Emotes
+
+    $emote_code = array(
+        ':)',
+        ':(',
+        ':D',
+        ':O',
+        ':l',
+        'Kappa',
+    );
+
+    $emote_images = array(
+        '<img class="emote" emotecode=":)" src="img/emote/happy.png">',
+        '<img class="emote" emotecode=":(" src="img/emote/sad.png">',
+        '<img class="emote" emotecode=":D" src="img/emote/very_happy.png">',
+        '<img class="emote" emotecode=":O" src="img/emote/surprised.png">',
+        '<img class="emote" emotecode=":l" src="img/emote/straight_face.png">',
+        '<img class="emote" emotecode="Kappa" src="img/emote/grey_face_no_space.png">',
+    );
+
+    $message_message = str_replace($emote_code, $emote_images, $message_message);
+    
+    return $message_message;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

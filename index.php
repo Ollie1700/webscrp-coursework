@@ -51,6 +51,7 @@
         </header>
         
         <section id="channel-container" class="channel-container">
+            <div id="room-gallery"><span id="room-gallery-close">X</span></div>
             <?php if(!isset($CURRENT_USER)) : ?>
                 
                 <div class="user-login-container">
