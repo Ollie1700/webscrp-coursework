@@ -388,10 +388,12 @@ form.inline-form input {
  */
 img.emote {
     width: 30px;
+    border-radius: 7px;
 }
 
 img.embedded-image {
     max-width: 100%;
+    border-radius: 7px;
 }
 
 /**

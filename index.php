@@ -51,7 +51,7 @@
         </header>
         
         <section id="channel-container" class="channel-container">
-            <div id="room-gallery"><span id="room-gallery-close">X</span></div>
+            <div id="room-gallery"><span id="room-gallery-close">X</span><h2 id="room-gallery-empty-message" style="display:none;">No media has been shared in this room yet. Why not add some?</h2></div>
             <?php if(!isset($CURRENT_USER)) : ?>
                 
                 <div class="user-login-container">

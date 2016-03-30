@@ -30,7 +30,7 @@ class Room {
         $messages_array = array();
         
         foreach($rows as $row) {
-            $messages_array[] = new Message($row['message_id'], $row['room_id'], $row['user_id'], $row['message_message'], $row['message_timestamp']);
+            $messages_array[] = new Message($row['message_id'], $row['room_id'], $row['user_id'], $row['message_message'], $row['message_raw_content'], $row['message_timestamp'], $row['message_deleted']);
         }
         
         return $messages_array;

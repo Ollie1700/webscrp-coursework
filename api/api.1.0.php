@@ -52,9 +52,11 @@ switch($noun) {
                                         exit_with_status_code(400);
                                     }
                                     
+                                    $message_raw_content = $message_message;
+                                    
                                     $message_message = parse_message($message_message);
                                     
-                                    $message = Message::update($message_id, $user_id, $message_message, $message_timestamp);
+                                    $message = Message::update($message_id, $user_id, $message_message, $message_raw_content, $message_timestamp);
                                     
                                     if(!$message) {
                                         echo 'Failed to update message';
@@ -65,7 +67,27 @@ switch($noun) {
                                     exit_with_status_code(201);
                                     
                                 case 'GET': break;
-                                case 'DELETE': break;
+                                case 'DELETE':
+                                    
+                                    $user_id = $_REQUEST['user_id'];
+                                    $message_timestamp = $_REQUEST['message_timestamp'];
+                                    
+                                    if(!isset($user_id) || !isset($message_timestamp)) {
+                                        echo 'You must provide user id and timestamp to delete a message.';
+                                        exit_with_status_code(400);
+                                    }
+                                    
+                                    $message = Message::update($message_id, $user_id, '<em>Message deleted.</em>', '<em>Message deleted.</em>', $message_timestamp);
+                                    
+                                    $success = $message->delete_message();
+                                    
+                                    if(!$success) {
+                                        echo 'Failed to delete message';
+                                        exit_with_status_code(500);
+                                    }
+                                    
+                                    echo $message->to_json();
+                                    exit_with_status_code(200);
                             }
                         }
                         else {
@@ -81,9 +103,11 @@ switch($noun) {
                                         exit_with_status_code(400);
                                     }
                                     
+                                    $message_raw_content = $message_message;
+                                    
                                     $message_message = parse_message($message_message);
                                     
-                                    $created_message = Message::create($room_id, $user_id, $message_message, $timestamp);
+                                    $created_message = Message::create($room_id, $user_id, $message_message, $message_raw_content, $timestamp);
                                     echo $created_message->to_json();
                                     
                                     exit_with_status_code(201);
@@ -136,13 +160,18 @@ switch($noun) {
                                        $ext == 'png') { // Can add more later
                                         
                                         move_uploaded_file($file['tmp_name'], '../uploads/' . $file['name']);
-                                        echo $file['name'] . ' uploaded.\n';
                                     }
                                     else {
                                         echo 'Didn\'t upload ' . $file['name'] . ' - it was not of a valid filetype.\n';
                                         echo 'You are only allowed to upload jpg, gif and png files.';
+                                        exit_with_status_code(400);
                                     }
                                 }
+                                
+                                $message = '<img class="embedded-image" src="uploads/' . $file['name'] . '">';
+                                
+                                $created_message = Message::create($_REQUEST['room_id'], $_REQUEST['user_id'], $message, $message, $_REQUEST['timestamp']);
+                                echo $created_message->to_json();
                                 
                                 exit_with_status_code(201);
                                 
@@ -668,15 +697,31 @@ function parse_message($message) {
         ':O',
         ':l',
         'Kappa',
+        'chrisLeTricked',
+        'jpHelp',
+        'danFiesta',
+        'paulYesPlease',
+        'ollieWasted',
+        'jordanBlueSteel',
+        'qtpTilt',
+        'vapeNation',
     );
 
     $emote_images = array(
-        '<img class="emote" emotecode=":)" src="img/emote/happy.png">',
-        '<img class="emote" emotecode=":(" src="img/emote/sad.png">',
-        '<img class="emote" emotecode=":D" src="img/emote/very_happy.png">',
-        '<img class="emote" emotecode=":O" src="img/emote/surprised.png">',
-        '<img class="emote" emotecode=":l" src="img/emote/straight_face.png">',
-        '<img class="emote" emotecode="Kappa" src="img/emote/grey_face_no_space.png">',
+        '<img class="emote" title=":)" src="img/emote/happy.png">',
+        '<img class="emote" title=":(" src="img/emote/sad.png">',
+        '<img class="emote" title=":D" src="img/emote/very_happy.png">',
+        '<img class="emote" title=":O" src="img/emote/surprised.png">',
+        '<img class="emote" title=":l" src="img/emote/straight_face.png">',
+        '<img class="emote" title="Kappa" src="img/emote/grey_face_no_space.png">',
+        '<img class="emote" title="chrisLeTricked" src="img/emote/chrisLeTricked.jpg">',
+        '<img class="emote" title="jpHelp" src="img/emote/jpHelp.jpg">',
+        '<img class="emote" title="danFiesta" src="img/emote/danFiesta.jpg">',
+        '<img class="emote" title="paulYesPlease" src="img/emote/paulYesPlease.jpg">',
+        '<img class="emote" title="ollieWasted" src="img/emote/ollieWasted.jpg">',
+        '<img class="emote" title="jordanBlueSteel" src="img/emote/jordanBlueSteel.jpg">',
+        '<img class="emote" title="qtpTilt" src="img/emote/qtpTilt.png">',
+        '<img class="emote" title="vapeNation" src="img/emote/vapeNation.png">',
     );
 
     $message_message = str_replace($emote_code, $emote_images, $message_message);
