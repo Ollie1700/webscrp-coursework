@@ -21,6 +21,14 @@
                 // Declare the current user's ID globally
                 window.current_user_id = <?php echo isset($CURRENT_USER) ? $CURRENT_USER->get_user_id() : 'false'; ?>;
                 
+                window.chatapp.getRoomById = function(room_id) {
+                    for(i = 0; i < window.chatapp.joined_rooms.length; i++) {
+                        if(window.chatapp.joined_rooms[i].room_id == room_id) {
+                            return window.chatapp.joined_rooms[i];
+                        }
+                    }
+                }
+                
             -->
         </script>
         

@@ -12,6 +12,11 @@ while(array_shift($uri) != 'api');
 
 $noun = array_shift($uri);
 
+// We need to use output buffering because you cannot set headers AFTER echoing content
+// In exit_with_status_code the header is set then the output is flushed; this effectively simulates
+// the content being echoed after the headers are set (which is what you have to do in PHP)
+ob_start();
+
 switch($noun) {
     
     case 'room':
@@ -708,20 +713,20 @@ function parse_message($message) {
     );
 
     $emote_images = array(
-        '<img class="emote" title=":)" src="img/emote/happy.png">',
-        '<img class="emote" title=":(" src="img/emote/sad.png">',
-        '<img class="emote" title=":D" src="img/emote/very_happy.png">',
-        '<img class="emote" title=":O" src="img/emote/surprised.png">',
-        '<img class="emote" title=":l" src="img/emote/straight_face.png">',
-        '<img class="emote" title="Kappa" src="img/emote/grey_face_no_space.png">',
-        '<img class="emote" title="chrisLeTricked" src="img/emote/chrisLeTricked.jpg">',
-        '<img class="emote" title="jpHelp" src="img/emote/jpHelp.jpg">',
-        '<img class="emote" title="danFiesta" src="img/emote/danFiesta.jpg">',
-        '<img class="emote" title="paulYesPlease" src="img/emote/paulYesPlease.jpg">',
-        '<img class="emote" title="ollieWasted" src="img/emote/ollieWasted.jpg">',
-        '<img class="emote" title="jordanBlueSteel" src="img/emote/jordanBlueSteel.jpg">',
-        '<img class="emote" title="qtpTilt" src="img/emote/qtpTilt.png">',
-        '<img class="emote" title="vapeNation" src="img/emote/vapeNation.png">',
+        '<img draggable="false" class="emote" title=":)" src="img/emote/happy.png">',
+        '<img draggable="false" class="emote" title=":(" src="img/emote/sad.png">',
+        '<img draggable="false" class="emote" title=":D" src="img/emote/very_happy.png">',
+        '<img draggable="false" class="emote" title=":O" src="img/emote/surprised.png">',
+        '<img draggable="false" class="emote" title=":l" src="img/emote/straight_face.png">',
+        '<img draggable="false" class="emote" title="Kappa" src="img/emote/grey_face_no_space.png">',
+        '<img draggable="false" class="emote" title="chrisLeTricked" src="img/emote/chrisLeTricked.jpg">',
+        '<img draggable="false" class="emote" title="jpHelp" src="img/emote/jpHelp.jpg">',
+        '<img draggable="false" class="emote" title="danFiesta" src="img/emote/danFiesta.jpg">',
+        '<img draggable="false" class="emote" title="paulYesPlease" src="img/emote/paulYesPlease.jpg">',
+        '<img draggable="false" class="emote" title="ollieWasted" src="img/emote/ollieWasted.jpg">',
+        '<img draggable="false" class="emote" title="jordanBlueSteel" src="img/emote/jordanBlueSteel.jpg">',
+        '<img draggable="false" class="emote" title="qtpTilt" src="img/emote/qtpTilt.png">',
+        '<img draggable="false" class="emote" title="vapeNation" src="img/emote/vapeNation.png">',
     );
 
     $message_message = str_replace($emote_code, $emote_images, $message_message);

@@ -20,6 +20,7 @@ function log_this($message) {
 // Exit with http status code
 function exit_with_status_code($code) {
     http_response_code($code);
+    ob_end_flush();
     exit();
 }
 
