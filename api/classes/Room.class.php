@@ -36,11 +36,29 @@ class Room {
         return $messages_array;
     }
     
+    public function get_room_admin_id() {
+        global $db;
+        $sql = $db->prepare("SELECT `room_admin_id` FROM room WHERE room_id=?");
+        $sql->execute(array($this->room_id));
+        $rows = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $rows[0]['room_admin_id'];
+    }
+    
+    public function get_user_status() {
+        global $db;
+        $sql = $db->prepare("SELECT user_in_room.user_id, user_in_room.user_status, user.user_first_name, user.user_last_name FROM user_in_room INNER JOIN user ON user_in_room.user_id=user.user_id AND user_in_room.room_id=?");
+        $sql->execute(array($this->room_id));
+        $rows = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
+    }
+    
     public function to_json() {
         return json_encode(
             array(
                 'room_id' => $this->room_id,
                 'room_name' => $this->room_name,
+                'room_admin_id' => $this->get_room_admin_id(),
+                'user_status' => $this->get_user_status(),
             )
         );
     }

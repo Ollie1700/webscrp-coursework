@@ -186,6 +186,37 @@ switch($noun) {
                         }
                         
                         break;
+                        
+                    case 'userstatus':
+                        
+                        if(!isset($_REQUEST['user_id']) || !isset($_REQUEST['user_status'])) {
+                            echo 'User ID and user status are required';
+                            exit_with_status_code(400);
+                        }
+                        
+                        switch($verb) {
+                            case 'POST': break;
+                            case 'PUT':
+                                
+                                $user_id = $_REQUEST['user_id'];
+                                $user_status = $_REQUEST['user_status'];
+                                
+                                $sql = $db->prepare("UPDATE user_in_room SET user_status=? WHERE user_id=? AND room_id=?");
+                                $success = $sql->execute(array($user_status, $user_id, $room_id));
+                                
+                                if($success && $sql->rowCount()) {
+                                    exit_with_status_code(201);
+                                }
+                                else {
+                                    echo 'Error setting user status code';
+                                    exit_with_status_code(500);
+                                }
+                                
+                                
+                            case 'GET': break;
+                            case 'DELETE': break;
+                        }
+                        break;
                 }
                 
             }

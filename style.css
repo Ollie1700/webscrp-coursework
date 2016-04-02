@@ -238,6 +238,34 @@ h1 span.subtitle {
     cursor: pointer;
 }
 
+.admin-control-button {
+    display: inline-block;
+    position: absolute;
+    right: 45px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.admin-control-window {
+    position: absolute;
+    top: 44px;
+    left: 0;
+    height: 321px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+}
+
+.admin-control-title {
+    margin: 15px;
+    font-size: 1.2em;
+}
+
+.admin-control-window a {
+    color: white;
+}
+
 #room-gallery {
     display: none;
     position: absolute;
