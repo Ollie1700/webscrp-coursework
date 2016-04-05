@@ -189,14 +189,14 @@ switch($noun) {
                         
                     case 'userstatus':
                         
-                        if(!isset($_REQUEST['user_id']) || !isset($_REQUEST['user_status'])) {
-                            echo 'User ID and user status are required';
-                            exit_with_status_code(400);
-                        }
-                        
                         switch($verb) {
                             case 'POST': break;
                             case 'PUT':
+                                
+                                if(!isset($_REQUEST['user_id']) || !isset($_REQUEST['user_status'])) {
+                                    echo 'User ID and user status are required';
+                                    exit_with_status_code(400);
+                                }
                                 
                                 $user_id = $_REQUEST['user_id'];
                                 $user_status = $_REQUEST['user_status'];
@@ -213,7 +213,23 @@ switch($noun) {
                                 }
                                 
                                 
-                            case 'GET': break;
+                            case 'GET': 
+                                
+                                $room = Room::get($room_id);
+                                
+                                if($room) {
+                                    echo json_encode(
+                                        array(
+                                            'user_statuses' => $room->get_user_status()
+                                        )
+                                    );
+                                    exit_with_status_code(200);
+                                }
+                                else {
+                                    echo 'Error getting user status.';
+                                    exit_with_status_code(500);
+                                }
+                                
                             case 'DELETE': break;
                         }
                         break;
