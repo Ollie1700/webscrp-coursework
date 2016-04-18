@@ -17,6 +17,13 @@ $noun = array_shift($uri);
 // the content being echoed after the headers are set (which is what you have to do in PHP)
 ob_start();
 
+/**
+ * My entire API is based on this script being accessed from an XHR. Based on the data handed to us by the XHR we will reach various
+ * endpoints via this monsterous set of switch statements and echo the required data back to the user.
+ * Each endpoint has been commented stating the path you have to request to access this endpoint and the paramaters you are allowed to
+ * provide. Note that certain verbs for certain endpoints may do nothing (i.e. just return 200 status code with no action taken).
+ */
+
 switch($noun) {
     
     case 'room':

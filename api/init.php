@@ -5,10 +5,7 @@ session_start();
 
 // CONFIG
 
-$HOST = 'localhost';
-$DB_NAME = 'chatapp';
-$USERNAME = 'root';
-$PASSWORD = '';
+require_once dirname(__FILE__) . '/config.php';
 
 // Set up a log method (we're gonna need it)
 function log_this($message) {

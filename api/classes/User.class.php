@@ -11,7 +11,7 @@ class User {
     private $friends_list;
     private $rooms_list;
     
-    public function __construct($user_id, $user_email, $user_first_name, $user_last_name) {
+    public function __construct($user_id, $user_email, $user_first_name, $user_last_name, $load_friends_list = true) {
         global $db;
         
         // Initialise variables
@@ -23,10 +23,12 @@ class User {
         $this->rooms_list = array();
         
         // Get this user's friends list
-        $sql = $db->prepare("SELECT `user_id_2` FROM friends WHERE user_id_1=?");
-        $sql->execute(array($user_id));
-        while($row = $sql->fetch(PDO::FETCH_ASSOC)) {
-            $this->friends_list[] = User::get($row['user_id_2']);
+        if($load_friends_list) {
+            $sql = $db->prepare("SELECT `user_id_2` FROM friends WHERE user_id_1=?");
+            $sql->execute(array($user_id));
+            while($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                $this->friends_list[] = User::get($row['user_id_2'], false);
+            }
         }
         
         // Get this user's room list
@@ -228,7 +230,7 @@ class User {
         return $success && $sql->rowCount() ? new User($user_id, $user_email, $user_first_name, $user_last_name) : false;
     }
     
-    public static function get($user_id = false) {
+    public static function get($user_id = false, $load_friends_list = true) {
         global $db;
         
         if($user_id) {
@@ -237,7 +239,7 @@ class User {
             
             if($success && $sql->rowCount()) {
                 $row = $sql->fetch(PDO::FETCH_ASSOC);
-                return new User($row['user_id'], $row['user_email'], $row['user_first_name'], $row['user_last_name']);
+                return new User($row['user_id'], $row['user_email'], $row['user_first_name'], $row['user_last_name'], $load_friends_list);
             }
             
             return false;
@@ -252,7 +254,7 @@ class User {
                 $users_array = array();
                 
                 foreach($rows as $row) {
-                    $users_array[] = new User($row['user_id'], $row['user_email'], $row['user_first_name'], $row['user_last_name']);
+                    $users_array[] = new User($row['user_id'], $row['user_email'], $row['user_first_name'], $row['user_last_name'], $load_friends_list);
                 }
                 
                 return $users_array;
